@@ -2,7 +2,7 @@ const connection = require('../database')();
 
 const get = () => {
 	return new Promise((resolve, reject) => {
-		connection.query('select * from type', (error, result) => {
+		connection.query('SELECT * FROM type', (error, result) => {
 			if(error) reject(error);
 			resolve(result);
 		});
@@ -19,7 +19,31 @@ const create = (type) =>{
 	});
 }
 
+const upd = (id, name) => {
+	let sql = 'CALL UPD_TYPE(?, ?);';
+	let params = [id, name];
+	return new Promise((resolve, reject) => {
+		connection.query(sql, params, (error, result) => {
+			if(error) reject(error);
+			resolve(result);
+		});
+	});
+}
+
+const del = (id) => {
+    let sql = 'CALL DEL_TYPE(?);';
+    return new Promise((resolve, reject) => {
+        connection.query(sql, id, (error, result) => {
+            if(error) reject(error);
+            resolve(result);
+        });
+    });
+}
+
+
 module.exports = { 
 	get, 
-	create
+	create,
+	upd, 
+	del
 };

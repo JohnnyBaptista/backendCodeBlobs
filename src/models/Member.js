@@ -21,15 +21,6 @@ const create = (name, description, group) => {
     });
 }
 
-const del = (id) => {
-    let sql = 'CALL DEL_MEMBER(?);';
-    return new Promise((resolve, reject) => {
-        connection.query(sql, id, (error, result) => {
-            if(error) reject(error);
-            resolve(result);
-        });
-    });
-}
 
 const upd = (id, name, description, group) => {
     let sql = 'CALL UPD_MEMBER(?, ?, ?, ?);';
@@ -42,9 +33,19 @@ const upd = (id, name, description, group) => {
     });
 }
 
+const del = (id) => {
+    let sql = 'CALL DEL_MEMBER(?);';
+    return new Promise((resolve, reject) => {
+        connection.query(sql, id, (error, result) => {
+            if(error) reject(error);
+            resolve(result);
+        });
+    });
+}
+
 module.exports = {
     get,
     create,
-    del,
-    upd
+    upd, 
+    del
 }
