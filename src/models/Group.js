@@ -21,7 +21,30 @@ const create = (name, type) => {
 }
 
 
+const upd = (id, name, type) => {
+	let sql = 'CALL UPD_GROUP(?, ?, ?);';
+    let params = [id, name, type];
+    return new Promise((resolve, reject) => {
+		connection.query(sql, params, (error, result) => {
+			if(error) reject(error);
+            resolve(result);
+        });
+    });
+}
+
+const del = (id) => {
+	let sql = 'CALL DEL_GROUP(?);';
+	return new Promise((resolve, reject) => {
+		connection.query(sql, id, (error, result) => {
+			if(error) reject(error);
+			resolve(result);
+		});
+	});
+}
+
 module.exports = { 
 	get, 
 	create,
+	del,
+	upd
 };

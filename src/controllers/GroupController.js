@@ -8,9 +8,19 @@ module.exports = {
 
 	async store(req, res) {
 		const { name, type } = req.body;
+		const result = await Group.create(name, type);
+		return res.json(result); 
+	},
 
-		const group = await Group.create(name, type);
+	async update(req, res) {
+		const { id, name, type } = req.body;
+		const result = await Group.upd(id, name, type);
+		return res.json(result);
+	},
 
-		return res.json(group); 
+	async delete(req, res) {
+		const { id } = req.params;
+		const result = await Group.del(id);
+		return res.json(result); 
 	}
 }
