@@ -2,7 +2,7 @@ const connection = require('../database')();
 
 const get = () => {
 	return new Promise((resolve, reject) => {
-		connection.query('select * from groups', (error, result) => {
+		connection.query('SELECT groups.group_id, groups.group_name, type.type_name FROM groups JOIN type ON type.type_id = groups.type_id', (error, result) => {
 			if(error) reject(error);
 			resolve(result);
 		});
