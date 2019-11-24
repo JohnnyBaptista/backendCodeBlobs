@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 23-Nov-2019 às 21:38
+-- Tempo de geração: 24-Nov-2019 às 01:13
 -- Versão do servidor: 10.4.6-MariaDB
 -- versão do PHP: 7.3.8
 
@@ -110,12 +110,28 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`group_id`, `group_name`, `type_id`) VALUES
-(1, 'Toninho', 1),
 (2, 'corote de morango', 1),
 (3, 'Matemática', 3),
-(4, 'maria', 1),
 (5, 'Grupo de Estudos top', 3),
 (6, 'Grupo EJCOMP', 1);
+
+--
+-- Acionadores `groups`
+--
+DELIMITER $$
+CREATE TRIGGER `ATT_QUANTITIES_DEL_GROUPS` AFTER DELETE ON `groups` FOR EACH ROW BEGIN 
+UPDATE quantities SET members = (SELECT COUNT(*) FROM bancoii.member), groups = (SELECT COUNT(*) FROM bancoii.groups), types = (SELECT COUNT(*) FROM bancoii.type), meets = (SELECT COUNT(*) FROM bancoii.meet)
+    WHERE 1;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `ATT_QUANTITIES_INS_GROUPS` AFTER INSERT ON `groups` FOR EACH ROW BEGIN 
+UPDATE quantities SET members = (SELECT COUNT(*) FROM bancoii.member), groups = (SELECT COUNT(*) FROM bancoii.groups), types = (SELECT COUNT(*) FROM bancoii.type), meets = (SELECT COUNT(*) FROM bancoii.meet)
+    WHERE 1;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -128,6 +144,32 @@ CREATE TABLE `meet` (
   `meet_description` varchar(100) DEFAULT NULL,
   `group_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `meet`
+--
+
+INSERT INTO `meet` (`meet_id`, `meet_description`, `group_id`) VALUES
+(4, 'TESTE', 3),
+(5, 'atpc', 2);
+
+--
+-- Acionadores `meet`
+--
+DELIMITER $$
+CREATE TRIGGER `ATT_QUANTITIES_DEL_MEET` AFTER DELETE ON `meet` FOR EACH ROW BEGIN 
+UPDATE quantities SET members = (SELECT COUNT(*) FROM bancoii.member), groups = (SELECT COUNT(*) FROM bancoii.groups), types = (SELECT COUNT(*) FROM bancoii.type), meets = (SELECT COUNT(*) FROM bancoii.meet)
+    WHERE 1;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `ATT_QUANTITIES_INS_MEET` AFTER INSERT ON `meet` FOR EACH ROW BEGIN 
+UPDATE quantities SET members = (SELECT COUNT(*) FROM bancoii.member), groups = (SELECT COUNT(*) FROM bancoii.groups), types = (SELECT COUNT(*) FROM bancoii.type), meets = (SELECT COUNT(*) FROM bancoii.meet)
+    WHERE 1;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -147,10 +189,26 @@ CREATE TABLE `member` (
 --
 
 INSERT INTO `member` (`member_id`, `member_name`, `member_description`, `group_id`) VALUES
-(6, 'Maria', 'Aluna', 2),
 (7, 'Lulindo', 'Diretor', 2),
-(8, 'Carlos', 'Aluno', 1),
-(9, 'Alan Turing', 'Professor', 2);
+(12, 'Jojo', 'Professor', NULL);
+
+--
+-- Acionadores `member`
+--
+DELIMITER $$
+CREATE TRIGGER `ATT_QUANTITIES_DEL_MEMBER` AFTER DELETE ON `member` FOR EACH ROW BEGIN 
+UPDATE quantities SET members = (SELECT COUNT(*) FROM bancoii.member), groups = (SELECT COUNT(*) FROM bancoii.groups), types = (SELECT COUNT(*) FROM bancoii.type), meets = (SELECT COUNT(*) FROM bancoii.meet)
+    WHERE 1;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `ATT_QUANTITIES_INS_MEMBER` AFTER INSERT ON `member` FOR EACH ROW BEGIN 
+UPDATE quantities SET members = (SELECT COUNT(*) FROM bancoii.member), groups = (SELECT COUNT(*) FROM bancoii.groups), types = (SELECT COUNT(*) FROM bancoii.type), meets = (SELECT COUNT(*) FROM bancoii.meet)
+    WHERE 1;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -176,6 +234,26 @@ INSERT INTO `period` (`period_id`, `period_name`, `period_h`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `quantities`
+--
+
+CREATE TABLE `quantities` (
+  `members` int(11) DEFAULT NULL,
+  `groups` int(11) DEFAULT NULL,
+  `types` int(11) DEFAULT NULL,
+  `meets` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `quantities`
+--
+
+INSERT INTO `quantities` (`members`, `groups`, `types`, `meets`) VALUES
+(2, 4, 2, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `type`
 --
 
@@ -191,6 +269,24 @@ CREATE TABLE `type` (
 INSERT INTO `type` (`type_id`, `type_name`) VALUES
 (1, 'Aula'),
 (3, 'Reunião');
+
+--
+-- Acionadores `type`
+--
+DELIMITER $$
+CREATE TRIGGER `ATT_QUANTITIES_DEL_TYPE` AFTER DELETE ON `type` FOR EACH ROW BEGIN 
+UPDATE quantities SET members = (SELECT COUNT(*) FROM bancoii.member), groups = (SELECT COUNT(*) FROM bancoii.groups), types = (SELECT COUNT(*) FROM bancoii.type), meets = (SELECT COUNT(*) FROM bancoii.meet)
+    WHERE 1;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `ATT_QUANTITIES_INS_TYPE` AFTER INSERT ON `type` FOR EACH ROW BEGIN 
+UPDATE quantities SET members = (SELECT COUNT(*) FROM bancoii.member), groups = (SELECT COUNT(*) FROM bancoii.groups), types = (SELECT COUNT(*) FROM bancoii.type), meets = (SELECT COUNT(*) FROM bancoii.meet)
+    WHERE 1;
+END
+$$
+DELIMITER ;
 
 --
 -- Índices para tabelas despejadas
@@ -258,13 +354,13 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT de tabela `meet`
 --
 ALTER TABLE `meet`
-  MODIFY `meet_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `meet_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de tabela `period`
