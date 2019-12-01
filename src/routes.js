@@ -22,6 +22,7 @@ routes.get('/member', MemberController.index);
 routes.post('/member', MemberController.store);
 routes.patch('/member', MemberController.update);
 routes.delete('/member/:id', MemberController.delete);
+routes.get('/member/:group_id', MemberController.consult);
 
 routes.get('/meet', MeetController.index);
 routes.post('/meet', MeetController.store);
