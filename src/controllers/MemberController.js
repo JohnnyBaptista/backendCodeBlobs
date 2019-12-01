@@ -22,6 +22,12 @@ module.exports = {
 		const { id } = req.params;
 		const result = await Member.del(id);
 		return res.json(result);
+	},
+
+	async consult(req, res) {
+		const { id } = req.params;
+		const result = await Member.getQuantMembers(id);
+		return res.json(result);
 	}
 
 }
