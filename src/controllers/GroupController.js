@@ -22,5 +22,11 @@ module.exports = {
 		const { id } = req.params;
 		const result = await Group.del(id);
 		return res.json(result); 
+	},
+
+	async consulta(req, res) {
+		const { id } = req.params;
+		const result = await Group.getGroup(id);
+		return res.json(result);
 	}
 }

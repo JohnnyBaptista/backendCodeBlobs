@@ -42,9 +42,20 @@ const del = (id) => {
 	});
 }
 
+const getGroup = (id) => {
+	return new Promise((resolve, reject) => {
+		const sql = 'SELECT groups.group_id, groups.group_name, type.type_name FROM groups JOIN type ON (type.type_id = groups.type_id) WHERE groups.group_id = ?;';
+		connection.query(sql, id, (error, result) => {
+			if(error) reject(error);
+			resolve(result);
+		});
+	});
+}
+
 module.exports = { 
 	get, 
 	create,
 	del,
-	upd
+	upd,
+	getGroup
 };

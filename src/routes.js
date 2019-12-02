@@ -12,6 +12,7 @@ routes.get('/groups', GroupController.index);
 routes.post('/groups', GroupController.store);
 routes.patch('/groups', GroupController.update);
 routes.delete('/groups/:id', GroupController.delete);
+routes.get('/groups/:id', GroupController.consulta);
 
 routes.get('/type', TipoController.index);
 routes.post('/type', TipoController.store);
