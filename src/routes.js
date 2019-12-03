@@ -10,14 +10,25 @@ const routes = express.Router();
 
 routes.get('/groups', GroupController.index);
 routes.post('/groups', GroupController.store);
+routes.patch('/groups', GroupController.update);
+routes.delete('/groups/:id', GroupController.delete);
+routes.get('/groups/:id', GroupController.consulta);
 
 routes.get('/type', TipoController.index);
 routes.post('/type', TipoController.store);
+routes.patch('/type', TipoController.update);
+routes.delete('/type/:id', TipoController.delete);
 
 routes.get('/member', MemberController.index);
+routes.get('/members/group', MemberController.consult);
+routes.get('/members/:group_id', MemberController.list);
 routes.post('/member', MemberController.store);
+routes.patch('/member', MemberController.update);
+routes.delete('/member/:id', MemberController.delete);
 
 routes.get('/meet', MeetController.index);
+routes.get('/meet/:id', MeetController.consult);
+routes.get('/meets/group', MeetController.meets);
 routes.post('/meet', MeetController.store);
 
 routes.get('/period', PeriodController.index);

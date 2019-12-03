@@ -2,7 +2,7 @@ const connection = require('../database')();
 
 const get = () => {
 	return new Promise((resolve, reject) => {
-		connection.query('select * from groups', (error, result) => {
+		connection.query('SELECT groups.group_id, groups.group_name, type.type_name FROM groups JOIN type ON type.type_id = groups.type_id', (error, result) => {
 			if(error) reject(error);
 			resolve(result);
 		});
@@ -21,7 +21,41 @@ const create = (name, type) => {
 }
 
 
+const upd = (id, name, type) => {
+	let sql = 'CALL UPD_GROUP(?, ?, ?);';
+    let params = [id, name, type];
+    return new Promise((resolve, reject) => {
+		connection.query(sql, params, (error, result) => {
+			if(error) reject(error);
+            resolve(result);
+        });
+    });
+}
+
+const del = (id) => {
+	let sql = 'CALL DEL_GROUP(?);';
+	return new Promise((resolve, reject) => {
+		connection.query(sql, id, (error, result) => {
+			if(error) reject(error);
+			resolve(result);
+		});
+	});
+}
+
+const getGroup = (id) => {
+	return new Promise((resolve, reject) => {
+		const sql = 'SELECT groups.group_id, groups.group_name, type.type_name FROM groups JOIN type ON (type.type_id = groups.type_id) WHERE groups.group_id = ?;';
+		connection.query(sql, id, (error, result) => {
+			if(error) reject(error);
+			resolve(result);
+		});
+	});
+}
+
 module.exports = { 
 	get, 
 	create,
+	del,
+	upd,
+	getGroup
 };
