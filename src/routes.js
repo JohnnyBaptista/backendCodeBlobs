@@ -26,8 +26,9 @@ routes.delete('/member/:id', MemberController.delete);
 routes.get('/member/:group_id', MemberController.consult);
 
 routes.get('/meet', MeetController.index);
-routes.post('/meet', MeetController.store);
 routes.get('/meet/:id', MeetController.consult);
+routes.get('/meets/group', MeetController.meets);
+routes.post('/meet', MeetController.store);
 
 routes.get('/period', PeriodController.index);
 routes.post('/period', PeriodController.store);
