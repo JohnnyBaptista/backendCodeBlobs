@@ -52,10 +52,21 @@ const getQuantMembers = (group_id) => {
 	});
 }
 
+const list = (group_id) => {
+    let sql = 'SELECT * FROM member WHERE member.group_id = ?';
+    return new Promise((resolve, reject) => {
+        connection.query(sql, group_id, (error, result) => {
+            if(error) reject(error);
+            resolve(result);
+        });
+    });
+}
+
 module.exports = {
     get,
     create,
     upd, 
     del,
-    getQuantMembers
+    getQuantMembers,
+    list
 }

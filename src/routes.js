@@ -21,6 +21,7 @@ routes.delete('/type/:id', TipoController.delete);
 
 routes.get('/member', MemberController.index);
 routes.get('/members/group', MemberController.consult);
+routes.get('/members/:group_id', MemberController.list);
 routes.post('/member', MemberController.store);
 routes.patch('/member', MemberController.update);
 routes.delete('/member/:id', MemberController.delete);

@@ -7,6 +7,12 @@ module.exports = {
 		return res.json(result);
 	},
 
+	async list(req, res) {
+		const { group_id } = req.params;
+		const result = await Member.list(group_id);
+		return res.json(result);
+	},
+
 	async store(req, res) {
 		const { name, description, group } = req.body;
 		const result = await Member.create(name, description, group);
