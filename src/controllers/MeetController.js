@@ -1,4 +1,5 @@
 const Meet = require('../models/Meet');
+const Group = require('../models/Group');
 
 module.exports = {
 	async index(req, res) {
@@ -19,5 +20,16 @@ module.exports = {
 		const { id } = req.params;
 		const result = await Meet.getQuantMeets(id);
 		return res.json(result);
+	},
+
+	async meets(req, res) {
+		const result = [];
+		const groups = await Group.get();
+		for(let group of groups){
+			const { group_id } = group;
+			let meetsGroup = await Meet.getGroupMeets(group_id);
+			result.push(meetsGroup);
+		}
+		return res.json({status: 200, result})
 	}
 }

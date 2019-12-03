@@ -29,9 +29,19 @@ const getQuantMeets = (group_id) => {
 	});
 }
 
+const getGroupMeets = (group_id) => {
+	return new Promise((resolve, reject) => {
+		const sql = 'SELECT groups.group_name as nameGroup, type.type_name as nameType, COUNT(meet.group_id) as qntMeets FROM groups JOIN meet ON groups.group_id = meet.group_id JOIN type ON groups.type_id = type.type_id WHERE groups.group_id = ?';
+		connection.query(sql, group_id, (error, result) => {
+			if(error) reject(error);
+			resolve(result);
+		});
+	})
+}
 
 module.exports = { 
 	get, 
 	create,
-	getQuantMeets
+	getQuantMeets,
+	getGroupMeets
 };
