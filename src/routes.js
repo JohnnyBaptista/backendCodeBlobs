@@ -20,10 +20,10 @@ routes.patch('/type', TipoController.update);
 routes.delete('/type/:id', TipoController.delete);
 
 routes.get('/member', MemberController.index);
+routes.get('/members/group', MemberController.consult);
 routes.post('/member', MemberController.store);
 routes.patch('/member', MemberController.update);
 routes.delete('/member/:id', MemberController.delete);
-routes.get('/member/:group_id', MemberController.consult);
 
 routes.get('/meet', MeetController.index);
 routes.post('/meet', MeetController.store);
