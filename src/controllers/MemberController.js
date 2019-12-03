@@ -1,4 +1,5 @@
 const Member = require('../models/Member');
+const Group = require('../models/Group');
 
 module.exports = {
 	async index(req, res) {
@@ -25,8 +26,13 @@ module.exports = {
 	},
 
 	async consult(req, res) {
-		const { id } = req.params;
-		const result = await Member.getQuantMembers(id);
+		const result = [];
+		const groups = await Group.get();
+		for(let group of groups){
+			const { group_id } = group;
+			let membersGroup = await Member.getQuantMembers(group_id);
+			result.push(membersGroup);
+		}
 		return res.json(result);
 	}
 
